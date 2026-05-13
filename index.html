@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Free, private PDF tools. Merge, split, convert and edit PDFs entirely in your browser. No upload, no tracking, no data stored." />
+  <title>76 PDF Suite | Free & Private PDF Tools</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="main.css">
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+</head>
+<body>
+
+<button class="hamburger" id="hamburger-btn">☰</button>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<aside id="sidebar">
+  <div class="sidebar-logo">
+    <div class="brand"><span>76</span> PDF Suite</div>
+    <div class="tagline">76 Supplier Company</div>
+  </div>
+
+  <div class="sidebar-section-label">Overview</div>
+  <button class="nav-item active" data-panel="home"><span class="nav-icon">🏠</span> Home</button>
+
+  <div class="sidebar-section-label">PDF Tools</div>
+  <button class="nav-item" data-panel="merge"><span class="nav-icon">🔗</span> Merge PDFs</button>
+  <button class="nav-item" data-panel="split"><span class="nav-icon">✂️</span> Split PDF</button>
+  <button class="nav-item" data-panel="img-to-pdf"><span class="nav-icon">🖼️</span> Image to PDF</button>
+  <button class="nav-item" data-panel="pdf-to-img"><span class="nav-icon">📸</span> PDF to Image</button>
+  <button class="nav-item" data-panel="watermark"><span class="nav-icon">💧</span> Watermark</button>
+  <button class="nav-item" data-panel="metadata"><span class="nav-icon">🏷️</span> Edit Metadata</button>
+  <button class="nav-item" data-panel="editor"><span class="nav-icon">✏️</span> PDF Editor</button>
+
+  <div class="sidebar-divider"></div>
+  <div class="sidebar-section-label">Company</div>
+  <button class="nav-item" data-panel="privacy"><span class="nav-icon">🔒</span> Privacy Policy</button>
+  <button class="nav-item" data-panel="contact"><span class="nav-icon">✉️</span> Contact Us</button>
+</aside>
+
+<div id="main">
+  <div id="topbar">
+    <span class="topbar-title" id="topbar-title">Home</span>
+    <div class="privacy-pill">🔒 No Upload · No Tracking · 100% Local</div>
+  </div>
+
+  <div id="content-area">
+
+    <div id="panel-home" class="panel active">
+      <div class="panel-header">
+        <h1>Free &amp; Private PDF Tools</h1>
+        <p>All processing happens in your browser. Your files never leave your device.</p>
+      </div>
+      <div class="hero-badge-row">
+        <div class="hero-badge">🔒 No file upload</div>
+        <div class="hero-badge">🚫 No tracking</div>
+        <div class="hero-badge">⚡ Instant processing</div>
+        <div class="hero-badge">💸 Completely free</div>
+      </div>
+      <div class="hero-grid">
+        <div class="tool-card" data-goto="merge"><div class="tool-card-icon">🔗</div><div class="tool-card-name">Merge PDFs</div><div class="tool-card-desc">Combine multiple PDFs into one</div></div>
+        <div class="tool-card" data-goto="split"><div class="tool-card-icon">✂️</div><div class="tool-card-name">Split PDF</div><div class="tool-card-desc">Split by page intervals into ZIP</div></div>
+        <div class="tool-card" data-goto="img-to-pdf"><div class="tool-card-icon">🖼️</div><div class="tool-card-name">Image to PDF</div><div class="tool-card-desc">Convert JPG/PNG images to PDF</div></div>
+        <div class="tool-card" data-goto="pdf-to-img"><div class="tool-card-icon">📸</div><div class="tool-card-name">PDF to Image</div><div class="tool-card-desc">Export pages as JPG or PNG</div></div>
+        <div class="tool-card" data-goto="watermark"><div class="tool-card-icon">💧</div><div class="tool-card-name">Watermark</div><div class="tool-card-desc">Stamp text across every page</div></div>
+        <div class="tool-card" data-goto="metadata"><div class="tool-card-icon">🏷️</div><div class="tool-card-name">Edit Metadata</div><div class="tool-card-desc">Update title, author and more</div></div>
+        <div class="tool-card" data-goto="editor"><div class="tool-card-icon">✏️</div><div class="tool-card-name">PDF Editor</div><div class="tool-card-desc">Annotate, sign and organise pages</div></div>
+      </div>
+    </div>
+
+    <div id="panel-merge" class="panel">
+      <div class="panel-header"><h1>Merge PDFs</h1><p>Drag files to reorder, then combine into one PDF. Max 50 MB per file.</p></div>
+      <div class="card">
+        <div class="drop-zone" onclick="document.getElementById('merge-input').click()">
+          <input type="file" id="merge-input" multiple accept=".pdf">
+          <div class="drop-zone-icon">📄</div>
+          <div class="drop-zone-label">Drop PDFs here</div>
+          <div class="drop-zone-sub">or <span>browse files</span> · Max 50 MB each</div>
+        </div>
+        <ul id="merge-file-list" class="file-list"></ul>
+        <div class="progress-wrap" id="merge-progress">
+          <div class="progress-bar-track"><div class="progress-bar-fill" id="merge-bar"></div></div>
+          <div class="progress-label" id="merge-progress-label">Merging…</div>
+        </div>
+        <button class="btn-primary" id="btn-merge">🔗 Merge &amp; Download</button>
+      </div>
+    </div>
+
+    <div id="panel-split" class="panel">
+      <div class="panel-header"><h1>Split PDF</h1><p>Split a PDF into chunks and download as a ZIP. Max 100 MB.</p></div>
+      <div class="card">
+        <div class="drop-zone" onclick="document.getElementById('split-input').click()">
+          <input type="file" id="split-input" accept=".pdf">
+          <div class="drop-zone-icon">✂️</div>
+          <div class="drop-zone-label">Drop a PDF here</div>
+          <div class="drop-zone-sub">or <span>browse file</span> · Max 100 MB</div>
+        </div>
+        <div class="file-info-bar" id="split-info">
+          <span class="file-name" id="split-fname"></span>
+          <span class="file-size" id="split-fsize"></span>
+          <span class="file-remove" id="split-clear">✕</span>
+        </div>
+        <div class="form-row">
+          <span class="form-label">Split every</span>
+          <input type="number" id="split-interval" class="form-input" value="1" min="1">
+          <span class="form-note">pages</span>
+        </div>
+        <div class="progress-wrap" id="split-progress">
+          <div class="progress-bar-track"><div class="progress-bar-fill" id="split-bar"></div></div>
+          <div class="progress-label" id="split-progress-label">Splitting…</div>
+        </div>
+        <button class="btn-primary" id="btn-split">✂️ Split &amp; Download ZIP</button>
+      </div>
+    </div>
+
+    <div id="panel-img-to-pdf" class="panel">
+      <div class="panel-header"><h1>Image to PDF</h1><p>Convert JPG/PNG images into a single PDF. Max 20 MB per image.</p></div>
+      <div class="card">
+        <div class="drop-zone" onclick="document.getElementById('img-input').click()">
+          <input type="file" id="img-input" multiple accept="image/png,image/jpeg">
+          <div class="drop-zone-icon">🖼️</div>
+          <div class="drop-zone-label">Drop images here</div>
+          <div class="drop-zone-sub">or <span>browse files</span> · JPG &amp; PNG · Max 20 MB each</div>
+        </div>
+        <ul id="img-file-list" class="file-list"></ul>
+        <div class="progress-wrap" id="img-progress">
+          <div class="progress-bar-track"><div class="progress-bar-fill" id="img-bar"></div></div>
+          <div class="progress-label" id="img-progress-label">Converting…</div>
+        </div>
+        <button class="btn-primary" id="btn-img-to-pdf">🖼️ Convert to PDF</button>
+      </div>
+    </div>
+
+    <div id="panel-pdf-to-img" class="panel">
+      <div class="panel-header"><h1>PDF to Image</h1><p>Export each PDF page as JPG or PNG, downloaded as a ZIP. Max 50 MB.</p></div>
+      <div class="card">
+        <div class="drop-zone" onclick="document.getElementById('p2i-input').click()">
+          <input type="file" id="p2i-input" accept=".pdf">
+          <div class="drop-zone-icon">📸</div>
+          <div class="drop-zone-label">Drop a PDF here</div>
+          <div class="drop-zone-sub">or <span>browse file</span> · Max 50 MB</div>
+        </div>
+        <div class="file-info-bar" id="p2i-info">
+          <span class="file-name" id="p2i-fname"></span>
+          <span class="file-size" id="p2i-fsize"></span>
+          <span class="file-remove" id="p2i-clear">✕</span>
+        </div>
+        <div class="form-row">
+          <span class="form-label">Format</span>
+          <div class="option-group">
+            <div class="option-pill selected" id="fmt-jpg" data-fmt="jpg">JPG</div>
+            <div class="option-pill" id="fmt-png" data-fmt="png">PNG</div>
+          </div>
+        </div>
+        <div class="form-row">
+          <span class="form-label">Quality</span>
+          <div class="option-group">
+            <div class="option-pill" id="dpi-72" data-dpi="1">Web (Low)</div>
+            <div class="option-pill selected" id="dpi-150" data-dpi="2">Standard</div>
+            <div class="option-pill" id="dpi-300" data-dpi="3">High</div>
+          </div>
+        </div>
+        <div class="progress-wrap" id="p2i-progress">
+          <div class="progress-bar-track"><div class="progress-bar-fill" id="p2i-bar"></div></div>
+          <div class="progress-label" id="p2i-progress-label">Converting page…</div>
+        </div>
+        <button class="btn-primary" id="btn-p2i">📸 Convert &amp; Download ZIP</button>
+      </div>
+    </div>
+
+    <div id="panel-watermark" class="panel">
+      <div class="panel-header"><h1>Add Watermark</h1><p>Stamp diagonal text across every page of your PDF. Max 100 MB.</p></div>
+      <div class="card">
+        <div class="drop-zone" onclick="document.getElementById('watermark-input').click()">
+          <input type="file" id="watermark-input" accept=".pdf">
+          <div class="drop-zone-icon">💧</div>
+          <div class="drop-zone-label">Drop a PDF here</div>
+          <div class="drop-zone-sub">or <span>browse file</span> · Max 100 MB</div>
+        </div>
+        <div class="file-info-bar" id="wm-info">
+          <span class="file-name" id="wm-fname"></span>
+          <span class="file-size" id="wm-fsize"></span>
+          <span class="file-remove" id="wm-clear">✕</span>
+        </div>
+        <div class="form-row">
+          <span class="form-label">Text</span>
+          <input type="text" id="watermark-text" class="form-input form-input--wide" placeholder="CONFIDENTIAL">
+        </div>
+        <div class="form-row">
+          <span class="form-label">Opacity</span>
+          <input type="range" id="watermark-opacity" min="0.05" max="1" step="0.05" value="0.3">
+          <span id="wm-opacity-val" class="form-note">30%</span>
+        </div>
+        <div class="progress-wrap" id="wm-progress">
+          <div class="progress-bar-track"><div class="progress-bar-fill" id="wm-bar"></div></div>
+          <div class="progress-label" id="wm-progress-label">Applying watermark…</div>
+        </div>
+        <button class="btn-primary" id="btn-watermark">💧 Apply &amp; Download</button>
+      </div>
+    </div>
+
+    <div id="panel-metadata" class="panel">
+      <div class="panel-header"><h1>Edit Metadata</h1><p>Update title, author and subject embedded in the PDF. Max 100 MB.</p></div>
+      <div class="card">
+        <div class="drop-zone" onclick="document.getElementById('meta-input').click()">
+          <input type="file" id="meta-input" accept=".pdf">
+          <div class="drop-zone-icon">🏷️</div>
+          <div class="drop-zone-label">Drop a PDF here</div>
+          <div class="drop-zone-sub">or <span>browse file</span> · Max 100 MB</div>
+        </div>
+        <div class="file-info-bar" id="meta-info">
+          <span class="file-name" id="meta-fname"></span>
+          <span class="file-size" id="meta-fsize"></span>
+          <span class="file-remove" id="meta-clear">✕</span>
+        </div>
+        <div class="form-row">
+          <span class="form-label">Title</span>
+          <input type="text" id="meta-title" class="form-input form-input--wide" placeholder="Document Title">
+        </div>
+        <div class="form-row">
+          <span class="form-label">Author</span>
+          <input type="text" id="meta-author" class="form-input form-input--wide" placeholder="Author Name">
+        </div>
+        <div class="form-row">
+          <span class="form-label">Subject</span>
+          <input type="text" id="meta-subject" class="form-input form-input--wide" placeholder="Subject">
+        </div>
+        <div class="progress-wrap" id="meta-progress">
+          <div class="progress-bar-track"><div class="progress-bar-fill" id="meta-bar"></div></div>
+          <div class="progress-label" id="meta-progress-label">Saving…</div>
+        </div>
+        <button class="btn-primary" id="btn-metadata">🏷️ Update &amp; Download</button>
+      </div>
+    </div>
+
+    <div id="panel-editor" class="panel">
+      <div class="panel-header"><h1>PDF Editor</h1><p>Annotate, sign, add text and reorder pages. Max 50 MB.</p></div>
+      <div class="card editor-launch-card">
+        <div class="editor-launch-icon">✏️</div>
+        <p class="editor-launch-title">Open a PDF to start editing</p>
+        <p class="editor-launch-sub">Add text, draw signatures, delete elements and reorder pages</p>
+        <label class="btn-primary editor-launch-label">
+          ✏️ Select PDF to Edit
+          <input type="file" id="editor-upload" accept=".pdf" style="display:none">
+        </label>
+      </div>
+    </div>
+
+    <div id="panel-privacy" class="panel">
+      <div class="panel-header"><h1>Privacy Policy</h1><p>We are committed to protecting your privacy. Here's exactly how 76 PDF Suite handles your data.</p></div>
+      <div class="privacy-grid">
+        <div class="privacy-item"><div class="privacy-item-icon">🔒</div><h3>Files Never Leave Your Device</h3><p>All PDF processing happens inside your browser using JavaScript. No file is ever uploaded to any server — not ours, not anyone else's.</p></div>
+        <div class="privacy-item"><div class="privacy-item-icon">🚫</div><h3>No Tracking or Analytics</h3><p>We do not use Google Analytics, Facebook Pixel or any other tracking technology. We do not track which tools you use or how often.</p></div>
+        <div class="privacy-item"><div class="privacy-item-icon">🍪</div><h3>No Cookies</h3><p>76 PDF Suite does not set any cookies on your device. Your browsing is completely private and leaves no trace on our end.</p></div>
+        <div class="privacy-item"><div class="privacy-item-icon">🗑️</div><h3>No Data Retention</h3><p>Because nothing is uploaded, there is nothing for us to store or delete. Closing the tab removes all traces of your work.</p></div>
+        <div class="privacy-item"><div class="privacy-item-icon">📡</div><h3>Network Connections Blocked</h3><p>Our Content Security Policy blocks all outgoing network connections from tool operations, making data leakage technically impossible.</p></div>
+        <div class="privacy-item"><div class="privacy-item-icon">🛠️</div><h3>Open Source Libraries</h3><p>We use trusted open-source libraries: pdf-lib, PDF.js, and JSZip. All processing code is publicly auditable.</p></div>
+      </div>
+      <div class="card" style="margin-top:20px;">
+        <p class="policy-footer"><strong>Last updated: 2026.</strong> This policy applies to all tools on this site. If you have questions, please contact us. 76 PDF Suite is a project by <strong>76 Supplier Company</strong>.</p>
+      </div>
+    </div>
+
+    <div id="panel-contact" class="panel">
+      <div class="panel-header"><h1>Contact Us</h1><p>Have a question, suggestion or found a bug? We'd love to hear from you.</p></div>
+      <div class="contact-grid">
+        <div class="contact-info-col">
+          <div class="contact-info-item"><div class="contact-info-icon">🏢</div><div><div class="contact-info-label">Company</div><div class="contact-info-value">76 Supplier Company</div></div></div>
+          <div class="contact-info-item"><div class="contact-info-icon">✉️</div><div><div class="contact-info-label">Email</div><div class="contact-info-value">info@76suppliercompany.com</div></div></div>
+          <div class="contact-info-item"><div class="contact-info-icon">🌐</div><div><div class="contact-info-label">Website</div><div class="contact-info-value">76suppliercompany.com</div></div></div>
+        </div>
+        <div class="card">
+          <div class="contact-form">
+            <input type="text" id="contact-name" placeholder="Your Name" class="form-input">
+            <input type="email" id="contact-email" placeholder="Your Email" class="form-input">
+            <input type="text" id="contact-subject" placeholder="Subject" class="form-input">
+            <textarea id="contact-message" placeholder="Your message…" class="form-input form-textarea"></textarea>
+            <button class="btn-primary" id="btn-contact" style="margin-top:4px;">✉️ Send Message</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script src="app.js"></script>
+
+</body>
+</html>
