@@ -1,16 +1,16 @@
 /* ─────────────────────────────────────────
-   76 PDF Suite — Core Layout & Design
+   76 PDF Suite — Layout Matrix & Theme Configuration
    ───────────────────────────────────────── */
 
 :root {
-  --primary-bg: #FAF6ED;    /* Cream */
-  --sidebar-bg: #1C2E4A;    /* Dark Navy */
-  --sidebar-text: #ffffff;
-  --btn-bg: #C9963A;        /* Gold/Ochre */
+  --primary-bg: #FAF6ED;    /* Rich Cream */
+  --sidebar-bg: #090D16;    /* Dark Obsidian Charcoal (Contrasts White/Gold Logo) */
+  --sidebar-text: #F1F5F9;
+  --btn-bg: #C9963A;        /* Gold Accent Theme */
   --btn-hover: #b38532;
-  --text-main: #1C1C1C;     /* Dark Grey */
+  --text-main: #1C1C1C;
   --border-color: #e2e8f0;
-  --sidebar-width: 260px;
+  --sidebar-width: 280px;   /* Expanded slightly for sizing compliance */
 }
 
 * {
@@ -23,13 +23,13 @@ body {
   background-color: var(--primary-bg);
   color: var(--text-main);
   font-family: 'DM Sans', sans-serif;
-  display: flex;
+  display: flex !important;  /* Locks structural elements side-by-side */
   min-height: 100vh;
   width: 100%;
   overflow-x: hidden;
 }
 
-/* --- SIDEBAR & LOGO (600x236 Aspect Ratio) --- */
+/* --- SIDEBAR & EXPANDED LOGO INTERFACE --- */
 #sidebar {
   width: var(--sidebar-width);
   background-color: var(--sidebar-bg);
@@ -41,30 +41,30 @@ body {
   top: 0;
   height: 100vh;
   z-index: 100;
-  transition: transform 0.3s ease;
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .sidebar-logo-wrapper {
-  padding: 24px 16px;
-  text-align: center;
+  padding: 32px 20px;
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: rgba(0, 0, 0, 0.15); /* Subtly deepens section */
 }
 
 .sidebar-logo-img {
   width: 100%;
-  max-width: 210px; /* Scales the 600x236 logo perfectly inside sidebar */
+  max-width: 240px; /* Increased size significantly for text readability */
   height: auto;
   display: block;
 }
 
 .sidebar-section-label {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: #64748b;
-  padding: 12px 24px 4px 24px;
+  letter-spacing: 0.08em;
+  color: #4b5563;
+  padding: 16px 24px 6px 24px;
   font-weight: 600;
 }
 
@@ -73,60 +73,56 @@ body {
   border: none;
   color: #94a3b8;
   text-align: left;
-  padding: 10px 24px;
+  padding: 12px 24px;
   font-size: 0.95rem;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 12px;
   width: 100%;
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
 }
 
 .nav-item:hover, .nav-item.active {
   color: var(--sidebar-text);
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: rgba(255, 255, 255, 0.03);
 }
 
 .nav-item.active {
   border-left: 4px solid var(--btn-bg);
   padding-left: 20px;
+  background-color: rgba(255, 255, 255, 0.05);
 }
 
-.sidebar-divider {
-  height: 1px;
-  background: rgba(255, 255, 255, 0.1);
-  margin: 15px 24px;
-}
-
-/* --- MAIN CONTENT LAYOUT --- */
+/* --- MAIN ENVIRONMENT WRAPPER --- */
 #main {
   flex: 1;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  min-width: 0; /* Prevents flex items from bursting box limits */
+  min-width: 0;
 }
 
 #topbar {
   background: #ffffff;
   border-bottom: 1px solid var(--border-color);
-  padding: 16px 32px;
+  padding: 18px 32px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
 .topbar-title {
-  font-size: 1.25rem;
+  font-size: 1.2rem;
   font-weight: 600;
+  color: #0f172a;
 }
 
 .privacy-pill {
   background: #f1f5f9;
-  padding: 6px 12px;
+  padding: 6px 14px;
   border-radius: 9999px;
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   font-weight: 500;
   color: #475569;
 }
@@ -140,7 +136,7 @@ body {
 
 .panel {
   width: 100%;
-  max-width: 800px;
+  max-width: 900px;
   display: none;
 }
 
@@ -148,23 +144,28 @@ body {
   display: block;
 }
 
-/* --- COMMON COMPONENTS --- */
+/* --- REUSABLE CARD & ZONE ELEMENTS --- */
 .card {
   background: #ffffff;
   border: 1px solid var(--border-color);
   border-radius: 12px;
-  padding: 24px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  padding: 28px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.02);
 }
 
 .drop-zone {
   border: 2px dashed #cbd5e1;
   border-radius: 8px;
-  padding: 40px 20px;
+  padding: 45px 20px;
   text-align: center;
   position: relative;
   background: #f8fafc;
   cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.drop-zone:hover {
+  border-color: var(--btn-bg);
 }
 
 .drop-zone input[type="file"] {
@@ -177,42 +178,42 @@ body {
   background-color: var(--btn-bg);
   color: #ffffff;
   border: none;
-  padding: 10px 20px;
+  padding: 10px 22px;
   border-radius: 6px;
   font-weight: 500;
   cursor: pointer;
+  transition: background 0.2s;
 }
 
 .btn-primary:hover { background-color: var(--btn-hover); }
 
-/* --- FILE INFO STRIPS --- */
 .file-info-bar {
   display: none;
   background: #f1f5f9;
-  padding: 10px 16px;
+  padding: 12px 16px;
   border-radius: 6px;
-  margin: 15px 0;
+  margin: 16px 0;
   justify-content: space-between;
   align-items: center;
 }
 
 .file-info-bar.visible { display: flex; }
-.file-remove { cursor: pointer; color: #ef4444; font-weight: bold; }
+.file-remove { cursor: pointer; color: #ef4444; font-weight: 600; }
 
-/* --- RESPONSIVE HAMBURGER (EDGE/CHROME COMPLIANT) --- */
+/* --- RESPONSIVE HAMBURGER VIEW --- */
 .hamburger {
   display: none;
   position: fixed;
-  bottom: 20px; right: 20px;
+  bottom: 24px; right: 24px;
   z-index: 999;
   background: var(--sidebar-bg);
   color: white;
-  border: none;
-  width: 50px; height: 50px;
+  border: 1px solid rgba(255,255,255,0.1);
+  width: 52px; height: 52px;
   border-radius: 50%;
-  font-size: 24px;
+  font-size: 22px;
   cursor: pointer;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
 
 .sidebar-overlay {
@@ -223,21 +224,22 @@ body {
   z-index: 99;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 992px) {
   .hamburger { display: block; }
   #sidebar {
     position: fixed;
     transform: translateX(-100%);
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   }
   #sidebar.open { transform: translateX(0); }
   .sidebar-overlay.visible { display: block; }
 }
 
-/* --- PDF EDITOR OVERLAYS --- */
+/* --- WORKSPACE CANVAS SPECIFICS --- */
 #editor-pages-container {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 28px;
   margin-top: 20px;
 }
 .editor-page-block {
@@ -248,7 +250,7 @@ body {
 }
 .editor-page-toolbar {
   background: #f8fafc;
-  padding: 8px 16px;
+  padding: 10px 18px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -256,16 +258,17 @@ body {
 }
 .editor-canvas-wrap {
   position: relative;
-  margin: 0 auto;
+  margin: 20px auto;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 .editor-text-overlay, .editor-sig-overlay {
   position: absolute;
-  background: rgba(255,255,255,0.9);
+  background: rgba(255,255,255,0.95);
   border: 1px dashed var(--btn-bg);
   padding: 4px;
   z-index: 10;
 }
 .editor-text-overlay textarea {
-  border: none; background: transparent; resize: both; outline: none; font-size: 16px;
+  border: none; background: transparent; resize: both; outline: none; font-size: 15px; width: 140px; height: 60px;
 }
-.overlay-drag-handle { background: #334155; color: white; font-size: 11px; padding: 2px 4px; cursor: move; }
+.overlay-drag-handle { background: #1e293b; color: white; font-size: 10px; padding: 2px 6px; cursor: move; border-radius: 3px; margin-bottom: 4px; text-align: center; }
