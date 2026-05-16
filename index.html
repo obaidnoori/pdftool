@@ -8,10 +8,10 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="main.css">
   
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-  <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+  <script src="pdf.min.js"></script>
+  <script src="pdf-lib.min.js"></script>
+  <script src="jszip.min.js"></script>
+  <script src="sortable.min.js"></script>
 </head>
 <body>
 
@@ -33,6 +33,10 @@
   <button class="nav-item" data-panel="pdf-to-img">📸 PDF to Image</button>
   <button class="nav-item" data-panel="watermark">💧 Watermark</button>
   <button class="nav-item" data-panel="metadata">🏷️ Metadata</button>
+
+  <div class="sidebar-section-label">Legal & Support</div>
+  <button class="nav-item" data-panel="privacy">🔒 Privacy Policy</button>
+  <button class="nav-item" data-panel="contact">✉️ Contact Us</button>
 </aside>
 
 <div id="main">
@@ -137,11 +141,33 @@
         <button class="btn-primary" id="btn-editor-save" style="margin-top:20px; width:100%;">Compile Changes & Export File</button>
       </div>
     </div>
+
+    <div id="panel-privacy" class="panel">
+      <div class="card">
+        <h2>Privacy Policy</h2>
+        <p style="margin-top:15px; color:#475569; line-height:1.6;">
+          Your data security is guaranteed. 76 PDF Suite executes all cryptographic conversions, merges, updates, and asset processing exclusively within your browser instance's local memory environment. No tracking matrices are installed, and zero data bytes leave your hardware device.
+        </p>
+      </div>
+    </div>
+
+    <div id="panel-contact" class="panel">
+      <div class="card">
+        <h2>Contact Support</h2>
+        <div style="margin-top:15px; display:flex; flex-direction:column; gap:12px;">
+          <input type="text" placeholder="Your Name" style="padding:10px; border:1px solid #cbd5e1; border-radius:6px;">
+          <input type="email" placeholder="Your Email Address" style="padding:10px; border:1px solid #cbd5e1; border-radius:6px;">
+          <textarea placeholder="Message details..." rows="5" style="padding:10px; border:1px solid #cbd5e1; border-radius:6px; font-family:inherit;"></textarea>
+          <button class="btn-primary" style="align-self:flex-start;">Submit Ticket</button>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
 
-<div id="sig-modal-overlay" class="modal-overlay">
-  <div class="card" style="background:white; width:440px;">
+<div id="sig-modal-overlay" class="modal-overlay" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.5); z-index:2000; align-items:center; justify-content:center;">
+  <div class="card" style="background:white; width:440px; border-radius:12px; padding:24px;">
     <h3>Draw Signature Input</h3>
     <canvas id="sig-canvas" width="400" height="200" style="border:1px dashed #94a3b8; background:#f8fafc; margin:15px 0; cursor:crosshair;"></canvas>
     <div style="display:flex; justify-content: flex-end; gap:10px;">
