@@ -4,13 +4,13 @@
 
 :root {
   --primary-bg: #FAF6ED;    /* Rich Cream */
-  --sidebar-bg: #090D16;    /* Dark Obsidian Charcoal (Contrasts White/Gold Logo) */
+  --sidebar-bg: #111622;    /* Obsidian Charcoal Deep Neutral */
   --sidebar-text: #F1F5F9;
-  --btn-bg: #C9963A;        /* Gold Accent Theme */
+  --btn-bg: #C9963A;        /* Gold Theme Accent */
   --btn-hover: #b38532;
   --text-main: #1C1C1C;
   --border-color: #e2e8f0;
-  --sidebar-width: 280px;   /* Expanded slightly for sizing compliance */
+  --sidebar-width: 280px;   /* Expanded sidebar layout width */
 }
 
 * {
@@ -23,13 +23,13 @@ body {
   background-color: var(--primary-bg);
   color: var(--text-main);
   font-family: 'DM Sans', sans-serif;
-  display: flex !important;  /* Locks structural elements side-by-side */
+  display: flex !important; /* Standardized layout engine for Edge layout locks */
   min-height: 100vh;
   width: 100%;
   overflow-x: hidden;
 }
 
-/* --- SIDEBAR & EXPANDED LOGO INTERFACE --- */
+/* --- SIDEBAR & HIGH-CONTRAST LOGO CONTAINER --- */
 #sidebar {
   width: var(--sidebar-width);
   background-color: var(--sidebar-bg);
@@ -41,20 +41,20 @@ body {
   top: 0;
   height: 100vh;
   z-index: 100;
-  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  border-right: 1px solid rgba(255, 255, 255, 0.03);
 }
 
 .sidebar-logo-wrapper {
-  padding: 32px 20px;
+  padding: 36px 20px;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.15); /* Subtly deepens section */
+  background-color: rgba(0, 0, 0, 0.2); /* Deepens background under logo paths */
 }
 
 .sidebar-logo-img {
   width: 100%;
-  max-width: 240px; /* Increased size significantly for text readability */
+  max-width: 250px; /* Scaled up significantly for clarity metrics */
   height: auto;
   display: block;
 }
@@ -94,7 +94,7 @@ body {
   background-color: rgba(255, 255, 255, 0.05);
 }
 
-/* --- MAIN ENVIRONMENT WRAPPER --- */
+/* --- ENVIRONMENT CONTAINER LAYOUT --- */
 #main {
   flex: 1;
   display: flex;
@@ -144,7 +144,7 @@ body {
   display: block;
 }
 
-/* --- REUSABLE CARD & ZONE ELEMENTS --- */
+/* --- INTERFACE COMPONENTS --- */
 .card {
   background: #ffffff;
   border: 1px solid var(--border-color);
@@ -161,11 +161,6 @@ body {
   position: relative;
   background: #f8fafc;
   cursor: pointer;
-  transition: border-color 0.2s;
-}
-
-.drop-zone:hover {
-  border-color: var(--btn-bg);
 }
 
 .drop-zone input[type="file"] {
@@ -182,7 +177,6 @@ body {
   border-radius: 6px;
   font-weight: 500;
   cursor: pointer;
-  transition: background 0.2s;
 }
 
 .btn-primary:hover { background-color: var(--btn-hover); }
@@ -200,7 +194,20 @@ body {
 .file-info-bar.visible { display: flex; }
 .file-remove { cursor: pointer; color: #ef4444; font-weight: 600; }
 
-/* --- RESPONSIVE HAMBURGER VIEW --- */
+/* --- CONTACT MODULE STYLING ARCHITECTURE --- */
+.contact-header { text-align: center; margin-bottom: 2rem; }
+.contact-header h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.2rem; color: #1e293b; }
+.contact-grid { display: grid; grid-template-columns: 1fr 1.5fr; gap: 2rem; margin-top: 1rem; }
+.contact-info-col { display: flex; flex-direction: column; gap: 1.5rem; }
+.contact-info-item { display: flex; align-items: center; gap: 1rem; background: #fff; padding: 1.2rem; border-radius: 8px; border: 1px solid var(--border-color); }
+.contact-info-icon { font-size: 1.5rem; }
+.contact-info-label { font-size: 0.8rem; text-transform: uppercase; color: #64748b; font-weight: 600; }
+.contact-info-value { color: #1e293b; font-weight: 500; }
+.contact-form { display: flex; flex-direction: column; gap: 1rem; }
+.form-input { padding: 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-family: inherit; font-size: 0.95rem; }
+.form-textarea { resize: vertical; min-height: 120px; }
+
+/* --- RESPONSIVE NAVIGATION CONTROL --- */
 .hamburger {
   display: none;
   position: fixed;
@@ -213,7 +220,6 @@ body {
   border-radius: 50%;
   font-size: 22px;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
 
 .sidebar-overlay {
@@ -226,49 +232,21 @@ body {
 
 @media (max-width: 992px) {
   .hamburger { display: block; }
+  .contact-grid { grid-template-columns: 1fr; }
   #sidebar {
     position: fixed;
     transform: translateX(-100%);
-    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.25s ease;
   }
   #sidebar.open { transform: translateX(0); }
   .sidebar-overlay.visible { display: block; }
 }
 
-/* --- WORKSPACE CANVAS SPECIFICS --- */
-#editor-pages-container {
-  display: flex;
-  flex-direction: column;
-  gap: 28px;
-  margin-top: 20px;
-}
-.editor-page-block {
-  background: #ffffff;
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  overflow: hidden;
-}
-.editor-page-toolbar {
-  background: #f8fafc;
-  padding: 10px 18px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid var(--border-color);
-}
-.editor-canvas-wrap {
-  position: relative;
-  margin: 20px auto;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-}
-.editor-text-overlay, .editor-sig-overlay {
-  position: absolute;
-  background: rgba(255,255,255,0.95);
-  border: 1px dashed var(--btn-bg);
-  padding: 4px;
-  z-index: 10;
-}
-.editor-text-overlay textarea {
-  border: none; background: transparent; resize: both; outline: none; font-size: 15px; width: 140px; height: 60px;
-}
+/* --- WORKSPACE OVERLAYS --- */
+#editor-pages-container { display: flex; flex-direction: column; gap: 28px; margin-top: 20px; }
+.editor-page-block { background: #ffffff; border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; }
+.editor-page-toolbar { background: #f8fafc; padding: 10px 18px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); }
+.editor-canvas-wrap { position: relative; margin: 20px auto; }
+.editor-text-overlay, .editor-sig-overlay { position: absolute; background: rgba(255,255,255,0.95); border: 1px dashed var(--btn-bg); padding: 4px; z-index: 10; }
+.editor-text-overlay textarea { border: none; background: transparent; resize: both; outline: none; font-size: 15px; width: 140px; height: 60px; }
 .overlay-drag-handle { background: #1e293b; color: white; font-size: 10px; padding: 2px 6px; cursor: move; border-radius: 3px; margin-bottom: 4px; text-align: center; }
