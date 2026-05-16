@@ -3,11 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>76 PDF Suite | Private Browser Utilities</title>
+  <meta name="description" content="Free, private PDF tools. Merge, split, convert and edit PDFs entirely in your browser. No upload, no tracking, no data stored." />
+  <title>76 PDF Suite | Free & Private PDF Tools</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="main.css">
-  
+
   <script src="pdf.min.js"></script>
   <script src="pdf-lib.min.js"></script>
   <script src="jszip.min.js"></script>
@@ -22,6 +24,7 @@
   <div class="sidebar-logo-wrapper">
     <img src="logo.svg" alt="76 PDF Suite" class="sidebar-logo-img">
   </div>
+  
   <div class="sidebar-section-label">Overview</div>
   <button class="nav-item active" data-panel="home">🏠 Home</button>
   
@@ -32,7 +35,7 @@
   <button class="nav-item" data-panel="img-to-pdf">🖼️ Image to PDF</button>
   <button class="nav-item" data-panel="pdf-to-img">📸 PDF to Image</button>
   <button class="nav-item" data-panel="watermark">💧 Watermark</button>
-  <button class="nav-item" data-panel="metadata">🏷️ Metadata</button>
+  <button class="nav-item" data-panel="metadata">🏷️ Edit Metadata</button>
 
   <div class="sidebar-section-label">Legal & Support</div>
   <button class="nav-item" data-panel="privacy">🔒 Privacy Policy</button>
@@ -41,15 +44,17 @@
 
 <div id="main">
   <div id="topbar">
-    <span class="topbar-title" id="topbar-title">Home</span>
-    <div class="privacy-pill">🔒 Local Client Engine Only</div>
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <span class="topbar-title" id="topbar-title">Home</span>
+    </div>
+    <div class="privacy-pill">🔒 100% Client-Side Engine</div>
   </div>
 
   <div id="content-area">
     <div id="panel-home" class="panel active">
       <div class="card">
-        <h2>Local File Engine</h2>
-        <p style="margin-top: 10px; color: #475569;">Select a tool from the side panel to process your documents instantly inside your local memory environment.</p>
+        <h2>Local File Processing Engine</h2>
+        <p style="margin-top: 10px; color: #64748b;">Select an operation tool from the sidebar menu to alter, convert, split, or modify files entirely within local temporary hardware memory flags.</p>
       </div>
     </div>
 
@@ -152,13 +157,42 @@
     </div>
 
     <div id="panel-contact" class="panel">
-      <div class="card">
-        <h2>Contact Support</h2>
-        <div style="margin-top:15px; display:flex; flex-direction:column; gap:12px;">
-          <input type="text" placeholder="Your Name" style="padding:10px; border:1px solid #cbd5e1; border-radius:6px;">
-          <input type="email" placeholder="Your Email Address" style="padding:10px; border:1px solid #cbd5e1; border-radius:6px;">
-          <textarea placeholder="Message details..." rows="5" style="padding:10px; border:1px solid #cbd5e1; border-radius:6px; font-family:inherit;"></textarea>
-          <button class="btn-primary" style="align-self:flex-start;">Submit Ticket</button>
+      <div class="contact-header">
+        <h1>Contact Us</h1>
+        <p>Have a question, suggestion or found a bug? We'd love to hear from you.</p>
+      </div>
+      <div class="contact-grid">
+        <div class="contact-info-col">
+          <div class="contact-info-item">
+            <div class="contact-info-icon">🏢</div>
+            <div>
+              <div class="contact-info-label">Company</div>
+              <div class="contact-info-value">76 Supplier Company</div>
+            </div>
+          </div>
+          <div class="contact-info-item">
+            <div class="contact-info-icon">✉️</div>
+            <div>
+              <div class="contact-info-label">Email</div>
+              <div class="contact-info-value">info@76suppliercompany.com</div>
+            </div>
+          </div>
+          <div class="contact-info-item">
+            <div class="contact-info-icon">🌐</div>
+            <div>
+              <div class="contact-info-label">Website</div>
+              <div class="contact-info-value">76suppliercompany.com</div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="contact-form">
+            <input type="text" id="contact-name" placeholder="Your Name" class="form-input">
+            <input type="email" id="contact-email" placeholder="Your Email" class="form-input">
+            <input type="text" id="contact-subject" placeholder="Subject" class="form-input">
+            <textarea id="contact-message" placeholder="Your message…" class="form-input form-textarea"></textarea>
+            <button class="btn-primary" id="btn-contact" style="margin-top:4px;">✉️ Send Message</button>
+          </div>
         </div>
       </div>
     </div>
