@@ -1,4 +1,7 @@
-/* --- COLOR SCHEME INJECTION --- */
+/* ─────────────────────────────────────────
+   76 PDF Suite — Core Layout & Design
+   ───────────────────────────────────────── */
+
 :root {
   --primary-bg: #FAF6ED;    /* Cream */
   --sidebar-bg: #1C2E4A;    /* Dark Navy */
@@ -6,76 +9,263 @@
   --btn-bg: #C9963A;        /* Gold/Ochre */
   --btn-hover: #b38532;
   --text-main: #1C1C1C;     /* Dark Grey */
+  --border-color: #e2e8f0;
+  --sidebar-width: 260px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
   background-color: var(--primary-bg);
   color: var(--text-main);
-  margin: 0;
   font-family: 'DM Sans', sans-serif;
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
 }
 
+/* --- SIDEBAR & LOGO (600x236 Aspect Ratio) --- */
 #sidebar {
+  width: var(--sidebar-width);
   background-color: var(--sidebar-bg);
   color: var(--sidebar-text);
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  z-index: 100;
+  transition: transform 0.3s ease;
 }
 
-.btn-primary {
-  background-color: var(--btn-bg) !important;
-  color: #ffffff !important;
-  border: none;
-}
-
-.btn-primary:hover {
-  background-color: var(--btn-hover) !important;
-}
-
-.sidebar-logo {
-  padding: 20px;
+.sidebar-logo-wrapper {
+  padding: 24px 16px;
   text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .sidebar-logo-img {
-  max-width: 100%;
+  width: 100%;
+  max-width: 210px; /* Scales the 600x236 logo perfectly inside sidebar */
   height: auto;
+  display: block;
 }
 
-/* --- FOOTER & LAYOUT FIX --- */
+.sidebar-section-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #64748b;
+  padding: 12px 24px 4px 24px;
+  font-weight: 600;
+}
+
+.nav-item {
+  background: none;
+  border: none;
+  color: #94a3b8;
+  text-align: left;
+  padding: 10px 24px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  transition: all 0.2s ease;
+}
+
+.nav-item:hover, .nav-item.active {
+  color: var(--sidebar-text);
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.nav-item.active {
+  border-left: 4px solid var(--btn-bg);
+  padding-left: 20px;
+}
+
+.sidebar-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  margin: 15px 24px;
+}
+
+/* --- MAIN CONTENT LAYOUT --- */
 #main {
+  flex: 1;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  min-width: 0; /* Prevents flex items from bursting box limits */
 }
 
-/* --- CENTER THE PANELS --- */
-#content-area {
+#topbar {
+  background: #ffffff;
+  border-bottom: 1px solid var(--border-color);
+  padding: 16px 32px;
   display: flex;
+  justify-content: space-between;
   align-items: center;
+}
+
+.topbar-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.privacy-pill {
+  background: #f1f5f9;
+  padding: 6px 12px;
+  border-radius: 9999px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #475569;
+}
+
+#content-area {
+  padding: 32px;
+  flex: 1;
+  display: flex;
   justify-content: center;
-  flex: 1; /* Take up remaining height */
-  padding: 2rem;
 }
 
 .panel {
   width: 100%;
   max-width: 800px;
-  /* Remove display logic that interferes with flex centering if hidden */
-  display: none; 
+  display: none;
 }
 
 .panel.active {
   display: block;
 }
 
-/* --- MOBILE SELECTION ACCESSIBILITY --- */
-.drop-zone { 
-  position: relative; 
-  overflow: hidden; 
+/* --- COMMON COMPONENTS --- */
+.card {
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.drop-zone {
+  border: 2px dashed #cbd5e1;
+  border-radius: 8px;
+  padding: 40px 20px;
+  text-align: center;
+  position: relative;
+  background: #f8fafc;
   cursor: pointer;
 }
 
-.drop-zone input[type=file] {
+.drop-zone input[type="file"] {
   position: absolute;
   top: 0; left: 0; width: 100%; height: 100%;
   opacity: 0; cursor: pointer; z-index: 10;
 }
+
+.btn-primary {
+  background-color: var(--btn-bg);
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.btn-primary:hover { background-color: var(--btn-hover); }
+
+/* --- FILE INFO STRIPS --- */
+.file-info-bar {
+  display: none;
+  background: #f1f5f9;
+  padding: 10px 16px;
+  border-radius: 6px;
+  margin: 15px 0;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.file-info-bar.visible { display: flex; }
+.file-remove { cursor: pointer; color: #ef4444; font-weight: bold; }
+
+/* --- RESPONSIVE HAMBURGER (EDGE/CHROME COMPLIANT) --- */
+.hamburger {
+  display: none;
+  position: fixed;
+  bottom: 20px; right: 20px;
+  z-index: 999;
+  background: var(--sidebar-bg);
+  color: white;
+  border: none;
+  width: 50px; height: 50px;
+  border-radius: 50%;
+  font-size: 24px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  top:0; left:0; width:100vw; height:100vh;
+  background: rgba(0,0,0,0.4);
+  z-index: 99;
+}
+
+@media (max-width: 768px) {
+  .hamburger { display: block; }
+  #sidebar {
+    position: fixed;
+    transform: translateX(-100%);
+  }
+  #sidebar.open { transform: translateX(0); }
+  .sidebar-overlay.visible { display: block; }
+}
+
+/* --- PDF EDITOR OVERLAYS --- */
+#editor-pages-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-top: 20px;
+}
+.editor-page-block {
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.editor-page-toolbar {
+  background: #f8fafc;
+  padding: 8px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+}
+.editor-canvas-wrap {
+  position: relative;
+  margin: 0 auto;
+}
+.editor-text-overlay, .editor-sig-overlay {
+  position: absolute;
+  background: rgba(255,255,255,0.9);
+  border: 1px dashed var(--btn-bg);
+  padding: 4px;
+  z-index: 10;
+}
+.editor-text-overlay textarea {
+  border: none; background: transparent; resize: both; outline: none; font-size: 16px;
+}
+.overlay-drag-handle { background: #334155; color: white; font-size: 11px; padding: 2px 4px; cursor: move; }
