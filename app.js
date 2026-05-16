@@ -1,15 +1,11 @@
 /* ─────────────────────────────────────────
-   76 PDF Suite — Safe Logic Engine
+   76 PDF Suite — Clean Single-Declaration Script
    ───────────────────────────────────────── */
 
-// Point the script compilation target directly to the local file asset
+// Set Worker execution source to local file
 pdfjsLib.GlobalWorkerOptions.workerSrc = 'pdf.worker.min.js';
 
-const { PDFDocument, rgb, degrees, StandardFonts } = PDFLib;
-
-// (Leave all other functional logic routines below this line exactly as they are)
-
-pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+// SINGLE INITIALIZATION PASSTHROUGH (Fixes the syntax redeclaration fault)
 const { PDFDocument, rgb, degrees, StandardFonts } = PDFLib;
 
 let mergeFiles = [];
@@ -40,7 +36,14 @@ function showPanel(panelId) {
     const activeNav = document.querySelector(`.nav-item[data-panel="${panelId}"]`);
     if (activeNav) activeNav.classList.add('active');
     
-    safeDOM('topbar-title', 'textContent', panelId.toUpperCase());
+    const titles = {
+        home: "Home", merge: "Merge PDFs", split: "Split PDF",
+        'img-to-pdf': "Image to PDF", 'pdf-to-img': "PDF to Image",
+        watermark: "Watermark", metadata: "Edit Metadata",
+        editor: "PDF Editor", privacy: "Privacy Policy", contact: "Contact Us"
+    };
+    safeDOM('topbar-title', 'textContent', titles[panelId] || "76 PDF Suite");
+    
     document.getElementById('sidebar').classList.remove('open');
     document.getElementById('sidebar-overlay').classList.remove('visible');
 }
@@ -76,7 +79,6 @@ document.addEventListener('DOMContentLoaded', () => {
     setupSignatureModal();
 });
 
-// --- CORE UTILITY MANAGEMENT ---
 function download(data, name, type) {
     const blob = data instanceof Blob ? data : new Blob([data], { type });
     const url = URL.createObjectURL(blob);
@@ -85,7 +87,6 @@ function download(data, name, type) {
     URL.revokeObjectURL(url);
 }
 
-// --- STANDARD TOOLS FUNCTION MATRIX ---
 function setupMergeLogic() {
     const input = document.getElementById('merge-input');
     if (!input) return;
@@ -245,7 +246,6 @@ function setupMetadataLogic() {
     }
 }
 
-// --- MODULAR WORKSPACE INTERACTIVE EDITOR ENGINE ---
 function setupEditorLogic() {
     const input = document.getElementById('editor-upload');
     const container = document.getElementById('editor-pages-container');
@@ -330,7 +330,6 @@ function setupEditorLogic() {
             const rx = pdfW / rect.width;
             const ry = pdfH / rect.height;
 
-            // Type processing pass
             wrap.querySelectorAll('.editor-text-overlay').forEach(t => {
                 const area = t.querySelector('textarea');
                 if(!area || !area.value) return;
@@ -342,7 +341,6 @@ function setupEditorLogic() {
                 copied.drawText(area.value, { x: x + 4, y: y + 4, size: 14 * ry, font: font, color: rgb(0,0,0) });
             });
 
-            // Sign processing pass
             const sigs = wrap.querySelectorAll('.editor-sig-overlay img');
             for (const img of sigs) {
                 const rBox = img.parentElement.getBoundingClientRect();
