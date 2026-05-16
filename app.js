@@ -1,5 +1,5 @@
 /* ─────────────────────────────────────────
-   76 PDF Suite — script.js (Full Logic)
+   76 PDF Suite — app.js (Full Logic)
    ───────────────────────────────────────── */
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
@@ -9,6 +9,17 @@ const { PDFDocument, rgb, degrees, StandardFonts } = PDFLib;
 let mergeFiles = [];
 let imgToPdfFiles = [];
 let currentSingleFile = null;
+
+// --- FILE NAMING HELPER ---
+function getOutputName(fileOrFiles, suffix, extension = "pdf") {
+    let baseName = "Document";
+    if (Array.isArray(fileOrFiles) && fileOrFiles.length > 0) {
+        baseName = fileOrFiles[0].name.replace(/\.[^/.]+$/, "");
+    } else if (fileOrFiles && fileOrFiles.name) {
+        baseName = fileOrFiles.name.replace(/\.[^/.]+$/, "");
+    }
+    return `${baseName}_${suffix}.${extension}`;
+}
 
 // --- NAVIGATION ---
 function showPanel(panelId) {
@@ -62,6 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setupPdfToImgLogic();
     setupWatermarkLogic();
     setupMetadataLogic();
+    setupEditorLogic();
 
     showPanel('home');
 });
@@ -125,7 +137,7 @@ function setupMergeLogic() {
                 updateProgress('merge', 10 + ((i + 1) / mergeFiles.length) * 80);
             }
             const pdfBytes = await mergedPdf.save();
-            download(pdfBytes, "merged.pdf", "application/pdf");
+            download(pdfBytes, getOutputName(mergeFiles, "Merge", "pdf"), "application/pdf");
             updateProgress('merge', 100, 'Done!');
             setTimeout(() => updateProgress('merge', 0), 2000);
         } catch (err) {
@@ -179,7 +191,7 @@ function setupSplitLogic() {
                 updateProgress('split', 20 + (i / pageCount) * 70);
             }
             const zipBlob = await zip.generateAsync({type: "blob"});
-            download(zipBlob, "split_pdfs.zip", "application/zip");
+            download(zipBlob, getOutputName(currentSingleFile, "Split", "zip"), "application/zip");
             updateProgress('split', 100, 'Success!');
             setTimeout(() => updateProgress('split', 0), 2000);
         } catch (err) {
@@ -212,7 +224,7 @@ function setupImgToPdfLogic() {
                 page.drawImage(img, { x: 0, y: 0, width: img.width, height: img.height });
             }
             const bytes = await pdfDoc.save();
-            download(bytes, "images_to.pdf", "application/pdf");
+            download(bytes, getOutputName(imgToPdfFiles, "ImageToPDF", "pdf"), "application/pdf");
             updateProgress('img', 100, 'Complete');
             setTimeout(() => updateProgress('img', 0), 2000);
         } catch (err) {
@@ -240,6 +252,7 @@ function setupPdfToImgLogic() {
         currentSingleFile = e.target.files[0];
         if (currentSingleFile) {
             document.getElementById('p2i-fname').textContent = currentSingleFile.name;
+            document.getElementById('p2i-fsize').textContent = formatBytes(currentSingleFile.size);
             document.getElementById('p2i-info').classList.add('visible');
         }
     });
@@ -277,7 +290,7 @@ function setupPdfToImgLogic() {
                 zip.file(`page_${i}.${format}`, imgData, {base64: true});
             }
             const zipBlob = await zip.generateAsync({type: "blob"});
-            download(zipBlob, "pdf_images.zip", "application/zip");
+            download(zipBlob, getOutputName(currentSingleFile, "PDFtoImage", "zip"), "application/zip");
             updateProgress('p2i', 100, 'Export complete!');
             setTimeout(() => updateProgress('p2i', 0), 2000);
         } catch (err) {
@@ -293,6 +306,7 @@ function setupWatermarkLogic() {
         currentSingleFile = e.target.files[0];
         if (currentSingleFile) {
             document.getElementById('wm-fname').textContent = currentSingleFile.name;
+            document.getElementById('wm-fsize').textContent = formatBytes(currentSingleFile.size);
             document.getElementById('wm-info').classList.add('visible');
         }
     });
@@ -321,7 +335,7 @@ function setupWatermarkLogic() {
                 });
             });
             const wmBytes = await pdfDoc.save();
-            download(wmBytes, "watermarked.pdf", "application/pdf");
+            download(wmBytes, getOutputName(currentSingleFile, "Watermark", "pdf"), "application/pdf");
             updateProgress('wm', 100);
             setTimeout(() => updateProgress('wm', 0), 2000);
         } catch (err) {
@@ -336,6 +350,7 @@ function setupMetadataLogic() {
         currentSingleFile = e.target.files[0];
         if (currentSingleFile) {
             document.getElementById('meta-fname').textContent = currentSingleFile.name;
+            document.getElementById('meta-fsize').textContent = formatBytes(currentSingleFile.size);
             document.getElementById('meta-info').classList.add('visible');
         }
     });
@@ -350,11 +365,50 @@ function setupMetadataLogic() {
             pdfDoc.setAuthor(document.getElementById('meta-author').value);
             pdfDoc.setSubject(document.getElementById('meta-subject').value);
             const metaBytes = await pdfDoc.save();
-            download(metaBytes, "updated_metadata.pdf", "application/pdf");
+            download(metaBytes, getOutputName(currentSingleFile, "Metadata", "pdf"), "application/pdf");
             updateProgress('meta', 100);
             setTimeout(() => updateProgress('meta', 0), 2000);
         } catch (err) {
             showToast("Failed to update metadata", "error");
+        }
+    });
+}
+
+// --- TOOL LOGIC: EDITOR ---
+function setupEditorLogic() {
+    const input = document.getElementById('editor-upload');
+    
+    input.addEventListener('change', (e) => {
+        currentSingleFile = e.target.files[0];
+        if (currentSingleFile) {
+            document.getElementById('editor-launch-card').style.display = 'none';
+            document.getElementById('editor-ui').style.display = 'block';
+            document.getElementById('editor-fname').textContent = currentSingleFile.name;
+            document.getElementById('editor-fsize').textContent = formatBytes(currentSingleFile.size);
+        }
+    });
+
+    document.getElementById('editor-clear').addEventListener('click', () => {
+        currentSingleFile = null;
+        document.getElementById('editor-launch-card').style.display = 'block';
+        document.getElementById('editor-ui').style.display = 'none';
+        input.value = ""; 
+    });
+
+    document.getElementById('btn-editor-save').addEventListener('click', async () => {
+        if (!currentSingleFile) return showToast("No file loaded", "error");
+        updateProgress('editor', 50, "Saving...");
+        try {
+            // Because we don't have a real WYSIWYG canvas mapped, this simply re-saves the file natively
+            const bytes = await currentSingleFile.arrayBuffer();
+            const pdfDoc = await PDFDocument.load(bytes);
+            const savedBytes = await pdfDoc.save();
+            download(savedBytes, getOutputName(currentSingleFile, "Edit", "pdf"), "application/pdf");
+            updateProgress('editor', 100, "Done!");
+            setTimeout(() => updateProgress('editor', 0), 2000);
+        } catch (err) {
+            showToast("Failed to save edited PDF", "error");
+            updateProgress('editor', 0);
         }
     });
 }
@@ -370,11 +424,14 @@ function download(data, name, type) {
     URL.revokeObjectURL(url);
 }
 
-// Ensure "Clear" buttons work
+// Ensure "Clear" buttons work for standard tools
 document.querySelectorAll('.file-remove').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-        const id = e.target.parentElement.id;
-        document.getElementById(id).classList.remove('visible');
-        currentSingleFile = null;
-    });
+    // Exclude editor clear since it's handled custom
+    if(btn.id !== 'editor-clear') {
+        btn.addEventListener('click', (e) => {
+            const id = e.target.parentElement.id;
+            document.getElementById(id).classList.remove('visible');
+            currentSingleFile = null;
+        });
+    }
 });
